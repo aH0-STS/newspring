@@ -2,9 +2,8 @@ pipeline {
     agent any
 
     environment {
-        DOCKER_IMAGE = 'rohith1305/java-application:${BUILD_NUMBER}'
-        DOCKER_CREDENTIALS = '7c910bc4-e2e4-48a4-857c-51be93277e96'  // Jenkins Credentials ID for Docker login
-        KUBE_CONFIG = '/var/lib/jenkins/.kube/config'  // Path to Kubernetes config (modify as needed)
+        DOCKER_IMAGE = 'rohith1305/java-application:${BUILD_NUMBER}' // Unique versioned image
+        DOCKER_CREDENTIALS = '7c910bc4-e2e4-48a4-857c-51be93277e96' // Jenkins Docker Hub Credentials ID
     }
 
     stages {
@@ -17,6 +16,7 @@ pipeline {
         }
 
         stage('Build with Maven') {
+            agent { docker { image 'maven:3.8.6-openjdk-11' } }
             steps {
                 script {
                     sh 'mvn clean package -DskipTests=true'
@@ -53,6 +53,15 @@ pipeline {
                     }
                 }
             }
+        }
+    }
+
+    post {
+        failure {
+            echo "Pipeline failed! Check the logs for details."
+        }
+        success {
+            echo "Deployment successful! 🚀"
         }
     }
 }
