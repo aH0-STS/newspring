@@ -2,15 +2,15 @@ pipeline {
     agent any
 
     environment {
-        DOCKER_IMAGE = 'rohith1305/java-application:${BUILD_NUMBER}' // Unique versioned image
-        DOCKER_CREDENTIALS = '7c910bc4-e2e4-48a4-857c-51be93277e96' // Jenkins Docker Hub Credentials ID
+        DOCKER_IMAGE = 'saiyash000/java-application:${BUILD_NUMBER}' // Unique versioned image
+        DOCKER_CREDENTIALS = 'dockerhub-credentials' // Jenkins Docker Hub Credentials ID
     }
 
     stages {
         stage('Checkout Code') {
             steps {
                 script {
-                    git branch: 'main', url: 'https://github.com/KyathamRohith/springboot.git'
+                    git branch: 'main', url: 'https://github.com/aH0-STS/newspring.git'
                 }
             }
         }
@@ -47,7 +47,7 @@ pipeline {
         stage('Deploy to Kubernetes') {
             steps {
                 script {
-                    withCredentials([file(credentialsId: 'kubeconfig', variable: 'KUBECONFIG')]) {
+                    withCredentials([file(credentialsId: 'configsec', variable: 'KUBECONFIG')]) {
                         sh "kubectl apply -f deployment.yaml"
                         sh "kubectl apply -f service.yaml"
                     }
