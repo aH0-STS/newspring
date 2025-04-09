@@ -3,7 +3,7 @@ pipeline {
 
     environment {
         DOCKER_IMAGE = 'saiyash000/java-application:${BUILD_NUMBER}' // Unique versioned image
-        DOCKER_CREDENTIALS = 'dockerhub-credentials' // Jenkins Docker Hub Credentials ID
+        DOCKER_CREDENTIALS = 'dockerhub-credentials1' // Jenkins Docker Hub Credentials ID
     }
 
     stages {
